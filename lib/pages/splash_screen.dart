@@ -1,3 +1,4 @@
+import 'package:dostify/services/cloud_storage_service.dart';
 import 'package:flutter/material.dart';
 
 //Packages
@@ -47,5 +48,6 @@ class SplashScreen extends StatefulWidget{
   void _regiterServices(){
 GetIt.instance.registerSingleton<NavigationService>(NavigationService());
 GetIt.instance.registerSingleton<MediaService>(MediaService());
+GetIt.instance.registerSingleton<CloudStorageService>(CloudStorageService());
   }
   

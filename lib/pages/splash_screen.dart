@@ -1,4 +1,4 @@
-import 'package:dostify/services/cloud_storage_service.dart';
+
 import 'package:flutter/material.dart';
 
 //Packages
@@ -8,6 +8,9 @@ import 'package:get_it/get_it.dart';
 //Pages
 import '../services/navigation_service.dart';
 import '../services/media_service.dart';
+import '../services/cloud_storage_service.dart';
+import '../services/database_service.dart';
+
 class SplashScreen extends StatefulWidget{
   const SplashScreen({ required Key key, required this.onIntializationComplete});
   final VoidCallback onIntializationComplete;
@@ -49,5 +52,6 @@ class SplashScreen extends StatefulWidget{
 GetIt.instance.registerSingleton<NavigationService>(NavigationService());
 GetIt.instance.registerSingleton<MediaService>(MediaService());
 GetIt.instance.registerSingleton<CloudStorageService>(CloudStorageService());
+GetIt.instance.registerSingleton<DatabaseService>(DatabaseService());
   }
   

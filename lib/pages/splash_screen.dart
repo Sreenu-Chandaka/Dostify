@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 
 //Packages
 import "package:firebase_core/firebase_core.dart";
+import 'package:get_it/get_it.dart';
 
+//Pages
+import '../services/navigation_service.dart';
+import '../services/media_service.dart';
 class SplashScreen extends StatefulWidget{
   const SplashScreen({ required Key key, required this.onIntializationComplete});
   final VoidCallback onIntializationComplete;
@@ -26,7 +30,7 @@ class SplashScreen extends StatefulWidget{
 
    return MaterialApp(title: "Dostify",theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(36, 35, 49, 1),
    ),
-   home: Scaffold(body: Center(child: Container(height: 200,width: 200,decoration: const BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/splash_image.png"))),),),),
+   home: Scaffold(body: Center(child: Container(height: 200,width: 200,decoration: const BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/splash_image.png"),fit: BoxFit.contain),),),),),
    
 );
   
@@ -41,6 +45,7 @@ class SplashScreen extends StatefulWidget{
   }
 
   void _regiterServices(){
-
+GetIt.instance.registerSingleton<NavigationService>(NavigationService());
+GetIt.instance.registerSingleton<MediaService>(MediaService());
   }
   

@@ -34,7 +34,9 @@ class SplashScreen extends StatefulWidget{
 
    return MaterialApp(title: "Dostify",theme: ThemeData(scaffoldBackgroundColor: const Color.fromRGBO(36, 35, 49, 1),
    ),
-   home: Scaffold(body: Center(child: Container(height: 200,width: 200,decoration: const BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/splash_image.png"),fit: BoxFit.contain),),),),),
+   home: Scaffold(body: Center(child: Container(height: 200,width: 200,decoration:  BoxDecoration(
+      borderRadius: BorderRadius.circular(40),
+    image: DecorationImage(image: AssetImage("assets/images/splash_image.png"),fit: BoxFit.contain),),),),),
    
 );
   

@@ -10,7 +10,7 @@ void main() {
       key: UniqueKey(),
       onInitializationComplete: () {
         runApp(
-          MainApp(),
+          const MainApp(),
         );
       },
     ),

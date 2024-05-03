@@ -1,5 +1,9 @@
-import 'package:dostify/widgets/custom_input_field.dart';
+
 import 'package:flutter/material.dart';
+
+//Widgets
+import "../widgets/custom_input_field.dart";
+import "../widgets/rounded_button.dart";
 
 
 class LoginPage extends StatefulWidget{
@@ -26,10 +30,24 @@ class LoginPage extends StatefulWidget{
 
   Widget _buildUI(){
    
-    return Scaffold(body: Container(padding: EdgeInsets.symmetric(horizontal:_deviceWidth * 0.03 ,vertical:_deviceHeight*0.02 ),height: _deviceHeight*0.98,width: _deviceWidth*0.97,child: Column(mainAxisSize: MainAxisSize.max,mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.center,children: [_pageTitle(),_loginForm()],),),);
+    return Scaffold(body:
+     Container(padding: EdgeInsets.symmetric(horizontal:_deviceWidth * 0.03 ,vertical:_deviceHeight*0.02 ),height: _deviceHeight*0.98,width: _deviceWidth*0.97,
+     child: Column(mainAxisSize: MainAxisSize.max,
+     mainAxisAlignment: MainAxisAlignment.center,
+     crossAxisAlignment: CrossAxisAlignment.center,
+     children:
+      [
+     _pageTitle(),
+     SizedBox(height: _deviceHeight*0.04),
+     _loginForm(),
+      SizedBox(height: _deviceHeight*0.05),
+     _loginButton(),
+     _registerAccountLink()
+     ],),),);
   }
  Widget _pageTitle(){
-  return SizedBox(height: _deviceHeight*0.1,child: const Text("Dostify",style: TextStyle(color: Colors.white,fontSize: 40,fontWeight: FontWeight.w600),),);
+  return SizedBox(height: _deviceHeight*0.1,child: const Text("Dostify",style: 
+  TextStyle(color: Colors.white,fontSize: 40,fontWeight: FontWeight.w600),),);
 }
 
 Widget _loginForm(){
@@ -44,5 +62,21 @@ Widget _loginForm(){
                     CustomTextFormField(onSaved: (_value){},  regEx:
                     r".{8,}", hintText: "Password", obscureText: true)],
   ),),);
+}
+
+Widget _loginButton(){
+  return RoundedButton(name: "Login", height: _deviceHeight*0.065, width:_deviceWidth* 0.65, onPressed: (){
+
+  });
+}
+
+Widget _registerAccountLink(){
+  return 
+  
+   GestureDetector(
+    onTap: (){
+      print("Clicked!");
+    },
+    child: Container(child: const Text("Don't you have an account?",style: TextStyle(color: Colors.blueAccent),),));
 }
   }

@@ -24,6 +24,7 @@ class ChatUser {
   }
 Map<String,dynamic> toMap(){
   return{
+    "uid":uid,
     "email":email,
     "name":name,
     "last_active":lastActive,

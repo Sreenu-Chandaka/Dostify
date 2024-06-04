@@ -2,7 +2,6 @@ import 'package:dostify/pages/login_page.dart';
 import 'package:dostify/pages/splash_screen.dart';
 import 'package:dostify/providers/authentication_provider.dart';
 import 'package:flutter/material.dart';
-import "package:firebase_analytics/firebase_analytics.dart";
 import 'package:provider/provider.dart';
 import 'services/navigation_service.dart';
 

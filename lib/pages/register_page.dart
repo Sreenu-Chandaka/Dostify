@@ -1,6 +1,5 @@
 //Packages
-// ignore_for_file: unused_element
-
+// ignore_for_file: unused_element, no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +8,7 @@ import 'package:file_picker/file_picker.dart';
 
 //Services
 import '../services/navigation_service.dart';
+import '../services/media_service.dart';
 
 //Widgets
 import '../widgets/custom_input_field.dart';
@@ -58,22 +58,24 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget _profileImageField() {
-    return GestureDetector(
-        onTap: () {
-          FilePicker.platform;
-        },
-        child: () {
-          if (_profileImage != null) {
-            return RoundedImageFile(
-                key: UniqueKey(),
-                size: _deviceHeight * 0.15,
-                image: _profileImage!);
-          }
-          return RoundedImageNetwork(
-            imagePath: 'https://i.pravatar.cc/1000?img=3',
-            size: _deviceHeight * 0.15,
+    return GestureDetector(onTap: () {
+      GetIt.instance.get<MediaService>().pickImageFromLibrary().then((_file) {
+        setState(() {
+          _profileImage = _file;
+        });
+      });
+    }, child: () {
+      if (_profileImage != null) {
+        return RoundedImageFile(
             key: UniqueKey(),
-          );
-        }());
+            size: _deviceHeight * 0.15,
+            image: _profileImage!);
+      }
+      return RoundedImageNetwork(
+        imagePath: 'https://i.pravatar.cc/1000?img=3',
+        size: _deviceHeight * 0.15,
+        key: UniqueKey(),
+      );
+    }());
   }
 }

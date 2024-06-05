@@ -120,14 +120,15 @@ class _LoginPageState extends State<LoginPage> {
             _loginFormKey.currentState!.save();
             auth.loginUsingEmailAndPassword(email: email, password: password);
           }
-        });
+        });  
   }
 
   Widget _registerAccountLink() {
     return GestureDetector(
-        onTap: () {
-          debugPrint("Clicked!");
-        },
+        onTap: () => navigation.navigateToRoute('/register'),
+
+         
+        
         child: const Text(
           "Don't you have an account?",
           style: TextStyle(color: Colors.blueAccent),

@@ -7,9 +7,11 @@ import 'package:provider/provider.dart';
 import 'services/navigation_service.dart';
 
 //pages
-import 'package:dostify/pages/login_page.dart';
-import 'package:dostify/pages/splash_screen.dart';
-import 'package:dostify/pages/home_page.dart';
+import '../pages/login_page.dart';
+import '../pages/splash_screen.dart';
+import '../pages/home_page.dart';
+import '../pages/register_page.dart';
+
 
 void main() {
   runApp(
@@ -43,7 +45,8 @@ class MainApp extends StatelessWidget{
      initialRoute: '/login',
        routes: {
       "/login":(BuildContext _context)=> const LoginPage(),
-      '/home':(BuildContext _context) => const HomePage()
+      '/home':(BuildContext _context) => const HomePage(),
+      '/register':(BuildContext _context) => const RegisterPage()
        },
      ),
    );

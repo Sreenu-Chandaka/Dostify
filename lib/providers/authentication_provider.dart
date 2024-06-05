@@ -27,17 +27,16 @@ class AuthenticationProvider extends ChangeNotifier {
         _databaseService.getUser(_user.uid).then((_snapshot) {
           Map<String, dynamic> _userData =
               _snapshot.data()! as Map<String, dynamic>;
-              user=ChatUser.fromJSON({
-                'uid':_user.uid,
-                'name':_userData['name'],
-                'email':_userData["email"],
-                "image":_userData["image"],
-                "last_active":_userData["last_active"]
-                
-              }) ;
-              _navigationService.removeAndNavigateToRoute('/home');
+          user = ChatUser.fromJSON({
+            'uid': _user.uid,
+            'name': _userData['name'],
+            'email': _userData["email"],
+            "image": _userData["image"],
+            "last_active": _userData["last_active"]
+          });
         });
-
+        debugPrint("logged in......./////////////////////////");
+        _navigationService.removeAndNavigateToRoute('/home');
         debugPrint("logged in");
       } else {
         _navigationService.removeAndNavigateToRoute('/login');

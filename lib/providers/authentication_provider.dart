@@ -35,10 +35,12 @@ class AuthenticationProvider extends ChangeNotifier {
                 "last_active":_userData["last_active"]
                 
               }) ;
+              _navigationService.removeAndNavigateToRoute('/home');
         });
 
         debugPrint("logged in");
       } else {
+        _navigationService.removeAndNavigateToRoute('/login');
         debugPrint("Not Authenticated");
       }
     });

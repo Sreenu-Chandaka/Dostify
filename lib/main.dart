@@ -1,9 +1,15 @@
-import 'package:dostify/pages/login_page.dart';
-import 'package:dostify/pages/splash_screen.dart';
+
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:dostify/providers/authentication_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'services/navigation_service.dart';
+
+//pages
+import 'package:dostify/pages/login_page.dart';
+import 'package:dostify/pages/splash_screen.dart';
+import 'package:dostify/pages/home_page.dart';
 
 void main() {
   runApp(
@@ -36,7 +42,8 @@ class MainApp extends StatelessWidget{
      navigatorKey:NavigationService.navigatorKey,
      initialRoute: '/login',
        routes: {
-      "/login":(BuildContext context)=> const LoginPage()
+      "/login":(BuildContext _context)=> const LoginPage(),
+      '/home':(BuildContext _context) => const HomePage()
        },
      ),
    );

@@ -1,4 +1,4 @@
-// ignore_for_file: empty_constructor_bodies
+// ignore_for_file: empty_constructor_bodies, constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +17,8 @@ class DatabaseService {
 
   Future<void> updateUserLastSeenTime(String uid) async {
     try {
-      _db.collection(USER_COLLECTION).doc(uid).update({
-        "last_active": DateTime.now(),
+    await  _db.collection(USER_COLLECTION).doc(uid).update({
+        "last_active": DateTime.now().toUtc(),
       });
     } catch (e) {
       debugPrint(e.toString());

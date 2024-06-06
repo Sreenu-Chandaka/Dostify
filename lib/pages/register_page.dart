@@ -1,5 +1,5 @@
 //Packages
-// ignore_for_file: unused_element, no_leading_underscores_for_local_identifiers
+// ignore_for_file: unused_element, no_leading_underscores_for_local_identifiers, unused_field
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +31,10 @@ class _RegisterPageState extends State<RegisterPage> {
   late double _deviceHeight;
   late double _deviceWidth;
   PlatformFile? _profileImage;
+  final _registerFromKey = GlobalKey<FormState>();
+  String? _email;
+  String? _name;
+  String? _password;
   @override
   Widget build(BuildContext context) {
     _deviceHeight = MediaQuery.of(context).size.height;
@@ -51,6 +55,10 @@ class _RegisterPageState extends State<RegisterPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _profileImageField(),
+            SizedBox(height: _deviceHeight * 0.05),
+            _registerForm(),
+            SizedBox(height: _deviceHeight * 0.05),
+            _registerButton()
           ],
         ),
       ),
@@ -77,5 +85,56 @@ class _RegisterPageState extends State<RegisterPage> {
         key: UniqueKey(),
       );
     }());
+  }
+
+  Widget _registerForm() {
+    return SizedBox(
+      height: _deviceHeight * 0.35,
+      child: Form(
+          key: _registerFromKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CustomTextFormField(
+                  onSaved: (_value) {
+                    setState(() {
+                      _name = _value;
+                    });
+                  },
+                  regEx: r".{8,}",
+                  hintText: "Name",
+                  obscureText: false),
+              CustomTextFormField(
+                  onSaved: (_value) {
+                    setState(() {
+                      _email = _value;
+                    });
+                  },
+                  regEx:
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                  hintText: "Email",
+                  obscureText: false),
+              CustomTextFormField(
+                  onSaved: (_value) {
+                    setState(() {
+                      _password = _value;
+                    });
+                  },
+                  regEx: r".{8,}",
+                  hintText: "Password",
+                  obscureText: true)
+            ],
+          )),
+    );
+  }
+
+  Widget _registerButton() {
+    return RoundedButton(
+        name: "Register",
+        height: _deviceHeight * 0.065,
+        width: _deviceWidth * 0.65,
+        onPressed: () {});
   }
 }

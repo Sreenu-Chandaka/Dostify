@@ -1,14 +1,15 @@
 //Packages
 // ignore_for_file: unused_element, no_leading_underscores_for_local_identifiers, unused_field
 
+import 'package:dostify/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:file_picker/file_picker.dart';
 
 //Services
-import '../services/navigation_service.dart';
 import '../services/media_service.dart';
+import '../services/cloud_storage_service.dart';
 
 //Widgets
 import '../widgets/custom_input_field.dart';
@@ -30,13 +31,22 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   late double _deviceHeight;
   late double _deviceWidth;
-  PlatformFile? _profileImage;
   final _registerFromKey = GlobalKey<FormState>();
+  
+  PlatformFile? _profileImage;
   String? _email;
   String? _name;
   String? _password;
+
+  late AuthenticationProvider _auth;
+  late DatabaseService _db;
+  late CloudStorageService _cloudStorageService;
+
+
   @override
   Widget build(BuildContext context) {
+    _auth=Provider.of<AuthenticationProvider>(context);
+    _db=GetIt.instance.get<DatabaseService>();
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return _buildUI();
@@ -132,9 +142,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _registerButton() {
     return RoundedButton(
-        name: "Register",
-        height: _deviceHeight * 0.065,
-        width: _deviceWidth * 0.65,
-        onPressed: () {});
+      name: "Register",
+      height: _deviceHeight * 0.065,
+      width: _deviceWidth * 0.65,
+      onPressed: () async {
+    if(_registerFromKey.currentState!.validate()&& _profileImage!=null){
+      
+    }
+      },
+    );
   }
 }

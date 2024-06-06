@@ -11,13 +11,27 @@ class DatabaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   // DatabaseService(){}
 
+  Future<void> createUser(
+      {String? uid, String? name, String? imageURL, String? email}) async {
+    try {
+      await _db.collection(USER_COLLECTION).doc(uid).set({
+        "name": name,
+        "email": email,
+        "last_active": DateTime.now().toUtc(),
+        "image": imageURL
+      });
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
   Future<DocumentSnapshot> getUser(String uid) {
     return _db.collection(USER_COLLECTION).doc(uid).get();
   }
 
   Future<void> updateUserLastSeenTime(String uid) async {
     try {
-    await  _db.collection(USER_COLLECTION).doc(uid).update({
+      await _db.collection(USER_COLLECTION).doc(uid).update({
         "last_active": DateTime.now().toUtc(),
       });
     } catch (e) {

@@ -17,7 +17,7 @@ class CloudStorageService {
       String? _uid, PlatformFile _file) async {
     try {
       Reference _ref =
-          _storage.ref().child("images/users/$_uid/profile.${_file.extension}");
+          _storage.ref().child("users/images/$_uid/profile.${_file.extension}");
       UploadTask _task = _ref.putFile(File(_file.path!));
       return await _task.then((_result) => _result.ref.getDownloadURL());
     } catch (e) {

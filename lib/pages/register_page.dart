@@ -31,8 +31,8 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   late double _deviceHeight;
   late double _deviceWidth;
-  final _registerFromKey = GlobalKey<FormState>();
-  
+  final _registerFormKey = GlobalKey<FormState>();
+
   PlatformFile? _profileImage;
   String? _email;
   String? _name;
@@ -40,13 +40,13 @@ class _RegisterPageState extends State<RegisterPage> {
 
   late AuthenticationProvider _auth;
   late DatabaseService _db;
-  late CloudStorageService _cloudStorageService;
-
+  late CloudStorageService _cloudStorage;
 
   @override
   Widget build(BuildContext context) {
-    _auth=Provider.of<AuthenticationProvider>(context);
-    _db=GetIt.instance.get<DatabaseService>();
+    _auth = Provider.of<AuthenticationProvider>(context);
+    _db = GetIt.instance.get<DatabaseService>();
+    _cloudStorage = GetIt.instance.get<CloudStorageService>();
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return _buildUI();
@@ -101,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return SizedBox(
       height: _deviceHeight * 0.35,
       child: Form(
-          key: _registerFromKey,
+          key: _registerFormKey,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -146,9 +146,19 @@ class _RegisterPageState extends State<RegisterPage> {
       height: _deviceHeight * 0.065,
       width: _deviceWidth * 0.65,
       onPressed: () async {
-    if(_registerFromKey.currentState!.validate()&& _profileImage!=null){
-      
-    }
+        if (_registerFormKey.currentState!.validate() &&
+            _profileImage != null) {
+          _registerFormKey.currentState!.save();
+          String? _uid = await _auth.registerUserUsingEmailAndPassword(
+              email: _email!, password: _password!);
+          String? imageURL =
+              await _cloudStorage.saveUserImageToStorage(_uid, _profileImage!);
+
+          await _db.createUser(
+              email: _email!, name: _name!, imageURL: imageURL, uid: _uid);
+          await _auth.logOut();
+          await _auth.loginUsingEmailAndPassword();
+        }
       },
     );
   }

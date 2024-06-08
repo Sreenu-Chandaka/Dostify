@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,12 +12,38 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _currentPage = 0;
+  final List<Widget> _pages = [
+    Container(
+      color: Colors.pink,
+    ),
+    Container(
+      color: Colors.blue,
+    )
+  ];
+
   @override
   Widget build(BuildContext context) {
     return _buildUI();
   }
 
   Widget _buildUI() {
-    return const Scaffold();
+    return Scaffold(
+      body: _pages[_currentPage],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentPage,
+        onTap: (_index) {
+          setState(() {
+            _currentPage = _index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.chat_bubble_sharp), label: "Chats"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.supervised_user_circle_sharp), label: "Users")
+        ],
+      ),
+    );
   }
 }

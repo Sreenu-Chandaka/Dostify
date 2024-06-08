@@ -1,6 +1,9 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
-
+//Packages
 import 'package:flutter/material.dart';
+
+//Pages
+import '../pages/chats_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,9 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentPage = 0;
   final List<Widget> _pages = [
-    Container(
-      color: Colors.pink,
-    ),
+    const ChatsPage(),
     Container(
       color: Colors.blue,
     )

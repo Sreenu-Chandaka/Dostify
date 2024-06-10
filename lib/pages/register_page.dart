@@ -42,14 +42,12 @@ class _RegisterPageState extends State<RegisterPage> {
   late AuthenticationProvider _auth;
   late DatabaseService _db;
   late CloudStorageService _cloudStorage;
-  late NavigationService _navigation;
 
   @override
   Widget build(BuildContext context) {
     _auth = Provider.of<AuthenticationProvider>(context);
     _db = GetIt.instance.get<DatabaseService>();
     _cloudStorage = GetIt.instance.get<CloudStorageService>();
-    _navigation = GetIt.instance.get<NavigationService>();
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     return _buildUI();
@@ -153,16 +151,14 @@ class _RegisterPageState extends State<RegisterPage> {
             _profileImage != null) {
           _registerFormKey.currentState!.save();
           String? _uid = await _auth.registerUserUsingEmailAndPassword(
-            email: _email,
-            password: _password,
-          );
-          String? imageUrl =
+              email: _email!, password: _password!);
+          String? imageURL =
               await _cloudStorage.saveUserImageToStorage(_uid, _profileImage!);
-          await _db.createUser(
-              uid: _uid, email: _email, name: _name, imageURL: imageUrl);
 
+          await _db.createUser(
+              email: _email!, name: _name!, imageURL: imageURL, uid: _uid);
           await _auth.logOut();
-          await _auth.loginUsingEmailAndPassword(email: _email,password: _password);
+          await _auth.loginUsingEmailAndPassword();
         }
       },
     );

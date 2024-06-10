@@ -20,7 +20,7 @@ class AuthenticationProvider extends ChangeNotifier {
     _auth = FirebaseAuth.instance;
     _navigationService = GetIt.instance.get<NavigationService>();
     _databaseService = GetIt.instance.get<DatabaseService>();
-    _auth.signOut();
+    
     _auth.authStateChanges().listen((_user) {
       if (_user != null) {
         _databaseService.updateUserLastSeenTime(_user.uid);
@@ -67,6 +67,7 @@ class AuthenticationProvider extends ChangeNotifier {
     } on FirebaseException {
       debugPrint("Error registering user");
     } catch (e) {
+      print("getting error is ......//////////////////////////////////////////////////////////////////");
       print(e);
     }
     return null;

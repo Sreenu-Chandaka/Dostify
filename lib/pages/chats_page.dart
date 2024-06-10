@@ -1,9 +1,14 @@
 //Packages
-import "package:dostify/providers/authentication_provider.dart";
-import "package:dostify/widgets/top_bar.dart";
+
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
-import "package:get_it/get_it.dart";
+
+//Providers
+import "package:dostify/providers/authentication_provider.dart";
+
+//Widgets
+import '../widgets/custom_listview_tiles.dart';
+import "package:dostify/widgets/top_bar.dart";
 
 class ChatsPage extends StatefulWidget {
   const ChatsPage({super.key});
@@ -49,7 +54,15 @@ class _ChatsPageState extends State<ChatsPage> {
                 _auth.logOut();
               },
             ),
-          )
+          ),
+          CustomListViewTilesWithActivity(
+              height: _deviceHeight * 0.1,
+              title: "Sreenu Chandaka",
+              subtitle: "hello",
+              imagePath: 'https://i.pravatar.cc/300',
+              isActive: false,
+              isActivity: false,
+              onTap: () {})
         ],
       ),
     );

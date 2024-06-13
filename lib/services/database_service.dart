@@ -1,11 +1,11 @@
-// ignore_for_file: empty_constructor_bodies, constant_identifier_names
+// ignore_for_file: empty_constructor_bodies, constant_identifier_names, no_leading_underscores_for_local_identifiers
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 const String USER_COLLECTION = "Users";
 const String CHATS_COLLECTION = "Chats";
-const String MESSAGES_COLLECTION = "Messages";
+const String MESSAGES_COLLECTION = "messages";
 
 class DatabaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -27,6 +27,22 @@ class DatabaseService {
 
   Future<DocumentSnapshot> getUser(String uid) {
     return _db.collection(USER_COLLECTION).doc(uid).get();
+  }
+
+  Stream<QuerySnapshot> getChatsForUser(String uid) {
+    return _db
+        .collection(CHATS_COLLECTION)
+        .where('members', arrayContains: uid)
+        .snapshots();
+  }
+
+  Future<QuerySnapshot> getLastMessageForUser(String _chatID) {
+    return _db
+        .collection(CHATS_COLLECTION)
+        .doc(_chatID)
+        .collection(MESSAGES_COLLECTION).orderBy("sent_time",descending: true)
+        .limit(1)
+        .get();
   }
 
   Future<void> updateUserLastSeenTime(String uid) async {

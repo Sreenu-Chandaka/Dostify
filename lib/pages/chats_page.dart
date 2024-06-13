@@ -1,12 +1,11 @@
 //Packages
 
-// ignore_for_file: unused_field
-
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
 //Providers
 import "package:dostify/providers/authentication_provider.dart";
+import "../models/chat.dart";
 import "../providers/chats_page_provider.dart";
 
 //Widgets
@@ -34,8 +33,9 @@ class _ChatsPageState extends State<ChatsPage> {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     _auth = Provider.of<AuthenticationProvider>(context);
+   
     return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (_) => ChatsPageProvider(_auth)),
+      ChangeNotifierProvider(create: (_) => ChatsPageProvider()),
     ], child: _buildUI());
   }
 
@@ -74,7 +74,27 @@ class _ChatsPageState extends State<ChatsPage> {
   }
 
   Widget _chatList() {
-    return _chatTile();
+    List<Chat>? chats=_pageProvider.chats;
+    print(chats);
+    print("chats in chatspage..........///////////////////////////////");
+    return Expanded(child: ((){
+      if(chats!=null){
+       if(chats.length!=0){
+        return ListView.builder(itemCount: chats.length,itemBuilder: (BuildContext context, index){
+
+          return _chatTile();
+        });
+      }
+      else{
+        return const Center(child: CircularProgressIndicator(color: Colors.amber,),);
+      }
+      }else{
+        return Container(
+          child: const CircularProgressIndicator(color: Colors.red,),
+        );
+      }
+      
+    })());
   }
 
   Widget _chatTile() {

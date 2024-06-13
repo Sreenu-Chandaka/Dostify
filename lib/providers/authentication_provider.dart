@@ -7,6 +7,7 @@ import "package:firebase_auth/firebase_auth.dart";
 import "package:get_it/get_it.dart";
 
 //Services
+import "../helper/get_helper.dart";
 import "../services/database_service.dart";
 import "../services/navigation_service.dart";
 
@@ -14,7 +15,8 @@ class AuthenticationProvider extends ChangeNotifier {
   late final FirebaseAuth _auth;
   late final NavigationService _navigationService;
   late final DatabaseService _databaseService;
-  late ChatUser user;
+  ChatUser user = ChatUser(
+      uid: '', name: '', email: '', imageURL: '', lastActive: DateTime.now());
 
   AuthenticationProvider() {
     _auth = FirebaseAuth.instance;
@@ -23,6 +25,9 @@ class AuthenticationProvider extends ChangeNotifier {
 
     _auth.authStateChanges().listen((_user) {
       if (_user != null) {
+        GetHelper.setCurrentUserId(_user.uid);
+        print(_user.uid);
+        print("user id in auth provider..////////////////////");
         _databaseService.updateUserLastSeenTime(_user.uid);
         _databaseService.getUser(_user.uid).then((_snapshot) {
           Map<String, dynamic> _userData =
@@ -36,6 +41,7 @@ class AuthenticationProvider extends ChangeNotifier {
           });
         });
         debugPrint("logged in......./////////////////////////");
+        debugPrint(user.uid);
         _navigationService.removeAndNavigateToRoute('/home');
         debugPrint("logged in");
       } else {
@@ -67,7 +73,8 @@ class AuthenticationProvider extends ChangeNotifier {
     } on FirebaseException {
       debugPrint("Error registering user");
     } catch (e) {
-      print("getting error is ......//////////////////////////////////////////////////////////////////");
+      print(
+          "getting error is ......//////////////////////////////////////////////////////////////////");
       print(e);
     }
     return null;

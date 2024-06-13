@@ -1,5 +1,6 @@
 import 'dart:async';
 //Packages
+import 'package:dostify/helper/get_helper.dart';
 import 'package:dostify/models/chat_user.dart';
 import "package:flutter/material.dart";
 import 'package:get_it/get_it.dart';
@@ -16,12 +17,11 @@ import "../models/chat.dart";
 import "../models/chat_message.dart";
 
 class ChatsPageProvider extends ChangeNotifier {
-  AuthenticationProvider _auth;
   late DatabaseService _db;
   List<Chat>? chats;
   late StreamSubscription _chatsStream;
 
-  ChatsPageProvider(this._auth) {
+  ChatsPageProvider() {
     _db = GetIt.instance.get<DatabaseService>();
     getChats();
   }
@@ -33,9 +33,16 @@ class ChatsPageProvider extends ChangeNotifier {
   }
 
   void getChats() async {
+    print(GetHelper.getCurrentUserId());
+    print(
+        "current user id in chat page provider ...////////////////////////////////////// ");
     try {
-      _chatsStream = _db.getChatsForUser(_auth.user.uid).listen(
+      _chatsStream = _db.getChatsForUser(GetHelper.getCurrentUserId()!).listen(
         (snapshot) async {
+          print(snapshot.docs.map((d) {
+            d.data();
+          }));
+          print("snapshots data..////////////////////////");
           chats = await Future.wait(
             snapshot.docs.map(
               (d) async {
@@ -66,7 +73,7 @@ class ChatsPageProvider extends ChangeNotifier {
                 //Return Chat Instance
                 return Chat(
                     uid: d.id,
-                    currentUserUid: _auth.user.uid,
+                    currentUserUid: GetHelper.getCurrentUserId()!,
                     activity: chatData['is_activity'],
                     group: chatData['is_group'],
                     members: members,

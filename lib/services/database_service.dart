@@ -30,6 +30,11 @@ class DatabaseService {
   }
 
   Stream<QuerySnapshot> getChatsForUser(String uid) {
+    print(_db
+        .collection(CHATS_COLLECTION)
+        .where('members', arrayContains: uid)
+        .snapshots());
+        print("//////////////////////printing in database service////////////////////////////////////////////////");
     return _db
         .collection(CHATS_COLLECTION)
         .where('members', arrayContains: uid)

@@ -1,5 +1,5 @@
 
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, deprecated_member_use
 
 import 'package:dostify/providers/authentication_provider.dart';
 import 'package:flutter/material.dart';

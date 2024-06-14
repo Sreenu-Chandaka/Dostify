@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 //Packages
@@ -41,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Chatify',
+      title: 'Dosti',
       theme: ThemeData(
         backgroundColor: const Color.fromRGBO(36, 35, 49, 1.0),
         scaffoldBackgroundColor: const Color.fromRGBO(36, 35, 49, 1.0),

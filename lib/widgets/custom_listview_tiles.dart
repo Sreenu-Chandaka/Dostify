@@ -6,8 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import "../widgets/rounded_image.dart";
 
 //Models
-import "../models/chat_message.dart";
-import "../models/chat_user.dart";
+
 
 class CustomListViewTilesWithActivity extends StatelessWidget {
   final double height;
@@ -15,8 +14,8 @@ class CustomListViewTilesWithActivity extends StatelessWidget {
   final bool isActive, isActivity;
   final Function onTap;
 
-  CustomListViewTilesWithActivity(
-      {required this.height,
+  const CustomListViewTilesWithActivity(
+      {super.key, required this.height,
       required this.title,
       required this.subtitle,
       required this.imagePath,
@@ -54,7 +53,7 @@ class CustomListViewTilesWithActivity extends StatelessWidget {
               )
             : Text(
                 subtitle,
-                style: TextStyle(
+                style: const TextStyle(
                     color: Colors.white54,
                     fontSize: 12,
                     fontWeight: FontWeight.w400),

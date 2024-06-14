@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () async{
           if (_loginFormKey.currentState!.validate()) {
             _loginFormKey.currentState!.save();
-           await auth.loginUsingEmailAndPassword(email: email, password: password);
+           await auth.loginUsingEmailAndPassword(email!,  password!);
      
           }
         });  

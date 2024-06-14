@@ -1,8 +1,8 @@
 //Packages
-// ignore_for_file: unused_element, no_leading_underscores_for_local_identifiers, unused_field
+
+// ignore_for_file: no_leading_underscores_for_local_identifiers
 
 import 'package:dostify/services/database_service.dart';
-import 'package:dostify/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
@@ -151,14 +151,14 @@ class _RegisterPageState extends State<RegisterPage> {
             _profileImage != null) {
           _registerFormKey.currentState!.save();
           String? _uid = await _auth.registerUserUsingEmailAndPassword(
-              email: _email!, password: _password!);
+              _email!,_password!);
           String? imageURL =
               await _cloudStorage.saveUserImageToStorage(_uid, _profileImage!);
 
           await _db.createUser(
-              email: _email!, name: _name!, imageURL: imageURL, uid: _uid);
-          await _auth.logOut();
-          await _auth.loginUsingEmailAndPassword();
+              _uid!, _email!,_name!,imageURL!);
+          await _auth.logout();
+          await _auth.loginUsingEmailAndPassword(_email!,_password!);
         }
       },
     );

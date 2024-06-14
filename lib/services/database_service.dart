@@ -1,62 +1,126 @@
-// ignore_for_file: empty_constructor_bodies, constant_identifier_names, no_leading_underscores_for_local_identifiers
+//Packages
+// ignore_for_file: constant_identifier_names, no_leading_underscores_for_local_identifiers, empty_constructor_bodies, avoid_print, prefer_interpolation_to_compose_strings, body_might_complete_normally_nullable
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+
+//Models
+import '../models/chat_message.dart';
 
 const String USER_COLLECTION = "Users";
-const String CHATS_COLLECTION = "Chats";
+const String CHAT_COLLECTION = "Chats";
 const String MESSAGES_COLLECTION = "messages";
 
 class DatabaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  // DatabaseService(){}
+
+  DatabaseService() {}
 
   Future<void> createUser(
-      {String? uid, String? name, String? imageURL, String? email}) async {
+      String _uid, String _email, String _name, String _imageURL) async {
     try {
-      await _db.collection(USER_COLLECTION).doc(uid).set({
-        "name": name,
-        "email": email,
-        "last_active": DateTime.now().toUtc(),
-        "image": imageURL
-      });
+      await _db.collection(USER_COLLECTION).doc(_uid).set(
+        {
+          "email": _email,
+          "image": _imageURL,
+          "last_active": DateTime.now().toUtc(),
+          "name": _name,
+        },
+      );
     } catch (e) {
-      debugPrint(e.toString());
+      print(e);
     }
   }
 
-  Future<DocumentSnapshot> getUser(String uid) {
-    return _db.collection(USER_COLLECTION).doc(uid).get();
+  Future<DocumentSnapshot> getUser(String _uid) {
+    return _db.collection(USER_COLLECTION).doc(_uid).get();
   }
 
-  Stream<QuerySnapshot> getChatsForUser(String uid) {
-    print(_db
-        .collection(CHATS_COLLECTION)
-        .where('members', arrayContains: uid)
-        .snapshots());
-        print("//////////////////////printing in database service////////////////////////////////////////////////");
+  Future<QuerySnapshot> getUsers({String? name}) {
+    Query _query = _db.collection(USER_COLLECTION);
+    if (name != null) {
+      _query = _query
+          .where("name", isGreaterThanOrEqualTo: name)
+          .where("name", isLessThanOrEqualTo: name + "z");
+    }
+    return _query.get();
+  }
+
+  Stream<QuerySnapshot> getChatsForUser(String _uid) {
     return _db
-        .collection(CHATS_COLLECTION)
-        .where('members', arrayContains: uid)
+        .collection(CHAT_COLLECTION)
+        .where('members', arrayContains: _uid)
         .snapshots();
   }
 
-  Future<QuerySnapshot> getLastMessageForUser(String _chatID) {
+  Future<QuerySnapshot> getLastMessageForChat(String _chatID) {
     return _db
-        .collection(CHATS_COLLECTION)
+        .collection(CHAT_COLLECTION)
         .doc(_chatID)
-        .collection(MESSAGES_COLLECTION).orderBy("sent_time",descending: true)
+        .collection(MESSAGES_COLLECTION)
+        .orderBy("sent_time", descending: true)
         .limit(1)
         .get();
   }
 
-  Future<void> updateUserLastSeenTime(String uid) async {
+  Stream<QuerySnapshot> streamMessagesForChat(String _chatID) {
+    return _db
+        .collection(CHAT_COLLECTION)
+        .doc(_chatID)
+        .collection(MESSAGES_COLLECTION)
+        .orderBy("sent_time", descending: false)
+        .snapshots();
+  }
+
+  Future<void> addMessageToChat(String _chatID, ChatMessage _message) async {
     try {
-      await _db.collection(USER_COLLECTION).doc(uid).update({
-        "last_active": DateTime.now().toUtc(),
-      });
+      await _db
+          .collection(CHAT_COLLECTION)
+          .doc(_chatID)
+          .collection(MESSAGES_COLLECTION)
+          .add(
+            _message.toJson(),
+          );
     } catch (e) {
-      debugPrint(e.toString());
+      print(e);
+    }
+  }
+
+  Future<void> updateChatData(
+      String _chatID, Map<String, dynamic> _data) async {
+    try {
+      await _db.collection(CHAT_COLLECTION).doc(_chatID).update(_data);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> updateUserLastSeenTime(String _uid) async {
+    try {
+      await _db.collection(USER_COLLECTION).doc(_uid).update(
+        {
+          "last_active": DateTime.now().toUtc(),
+        },
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> deleteChat(String _chatID) async {
+    try {
+      await _db.collection(CHAT_COLLECTION).doc(_chatID).delete();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<DocumentReference?> createChat(Map<String, dynamic> _data) async {
+    try {
+      DocumentReference _chat =
+          await _db.collection(CHAT_COLLECTION).add(_data);
+      return _chat;
+    } catch (e) {
+      print(e);
     }
   }
 }

@@ -12,8 +12,8 @@ import '../providers/chats_page_provider.dart';
 //Services
 import '../services/navigation_service.dart';
 
-//Pages
-// import '../pages/chat_page.dart';
+// Pages
+import '../pages/chat_page.dart';
 
 //Widgets
 import '../widgets/top_bar.dart';
@@ -143,8 +143,9 @@ class _ChatsPageState extends State<ChatsPage> {
       isActive: _isActive,
       isActivity: _chat.activity,
       onTap: () {
-        _navigation.navigateToPage(Container()
-          // ChatPage(chat: _chat),
+        print("onTap triggered properly");
+        _navigation.navigateToPage(
+          ChatPage(chat: _chat)
         );
       },
     );

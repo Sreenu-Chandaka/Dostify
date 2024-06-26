@@ -2,14 +2,15 @@
 
 import 'package:flutter/material.dart';
 
+import '../core/constants.dart';
+
 class TopBar extends StatelessWidget {
   final String _barTitle;
   Widget? primaryAction;
   Widget? secondaryAction;
   double? fontSize;
 
-  late double _deviceHeight;
-  late double _deviceWidth;
+  
 
   TopBar(this._barTitle,
       {super.key,
@@ -19,15 +20,14 @@ class TopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _deviceHeight = MediaQuery.of(context).size.height;
-    _deviceWidth = MediaQuery.of(context).size.width;
-    return _buildUI();
+ 
+    return _buildUI(context);
   }
 
-  Widget _buildUI() {
+  Widget _buildUI(BuildContext context) {
     return SizedBox(
-      height: _deviceHeight * 0.10,
-      width: _deviceWidth,
+      height: Device().height(context) * 0.10,
+      width: Device().width(context),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

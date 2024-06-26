@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 import 'package:file_picker/file_picker.dart';
 
 //Services
+import '../core/constants.dart';
 import '../services/media_service.dart';
 import '../services/cloud_storage_service.dart';
 
@@ -30,8 +31,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  late double _deviceHeight;
-  late double _deviceWidth;
+
   final _registerFormKey = GlobalKey<FormState>();
 
   PlatformFile? _profileImage;
@@ -48,8 +48,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _auth = Provider.of<AuthenticationProvider>(context);
     _db = GetIt.instance.get<DatabaseService>();
     _cloudStorage = GetIt.instance.get<CloudStorageService>();
-    _deviceHeight = MediaQuery.of(context).size.height;
-    _deviceWidth = MediaQuery.of(context).size.width;
+ 
     return _buildUI();
   }
 
@@ -57,18 +56,18 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(
-            horizontal: _deviceWidth * 0.03, vertical: _deviceHeight * 0.02),
-        width: _deviceWidth * 0.98,
-        height: _deviceHeight * 0.97,
+            horizontal: Device().width(context)* 0.03, vertical: Device().height(context) * 0.02),
+        width: Device().width(context)* 0.98,
+        height: Device().height(context) * 0.97,
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _profileImageField(),
-            SizedBox(height: _deviceHeight * 0.05),
+            SizedBox(height: Device().height(context) * 0.05),
             _registerForm(),
-            SizedBox(height: _deviceHeight * 0.05),
+            SizedBox(height: Device().height(context) * 0.05),
             _registerButton()
           ],
         ),
@@ -87,12 +86,12 @@ class _RegisterPageState extends State<RegisterPage> {
       if (_profileImage != null) {
         return RoundedImageFile(
             key: UniqueKey(),
-            size: _deviceHeight * 0.15,
+            size: Device().height(context) * 0.15,
             image: _profileImage!);
       }
       return RoundedImageNetwork(
         imagePath: 'https://i.pravatar.cc/1000?img=3',
-        size: _deviceHeight * 0.15,
+        size: Device().height(context) * 0.15,
         key: UniqueKey(),
       );
     }());
@@ -100,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _registerForm() {
     return SizedBox(
-      height: _deviceHeight * 0.35,
+      height: Device().height(context) * 0.35,
       child: Form(
           key: _registerFormKey,
           child: Column(
@@ -144,8 +143,8 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _registerButton() {
     return RoundedButton(
       name: "Register",
-      height: _deviceHeight * 0.065,
-      width: _deviceWidth * 0.65,
+      height: Device().height(context) * 0.065,
+      width: Device().width(context)* 0.65,
       onPressed: () async {
         if (_registerFormKey.currentState!.validate() &&
             _profileImage != null) {

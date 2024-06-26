@@ -1,4 +1,5 @@
 //Packages
+import "package:dostify/core/constants.dart";
 import 'package:flutter/material.dart';
 import "package:get_it/get_it.dart";
 import "package:provider/provider.dart";
@@ -21,8 +22,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  double _deviceHeight = 0;
-  double _deviceWidth = 0;
+ 
 
   late AuthenticationProvider auth;
   late NavigationService navigation;
@@ -32,8 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   String? password;
   @override
   Widget build(BuildContext context) {
-    _deviceHeight = MediaQuery.of(context).size.height;
-    _deviceWidth = MediaQuery.of(context).size.width;
+   
     auth = Provider.of<AuthenticationProvider>(context);
     navigation = GetIt.instance.get<NavigationService>();
     return _buildUI();
@@ -43,20 +42,20 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(
-            horizontal: _deviceWidth * 0.03, vertical: _deviceHeight * 0.02),
-        height: _deviceHeight * 0.98,
-        width: _deviceWidth * 0.97,
+            horizontal: Device().width(context)* 0.03, vertical: Device().height(context) * 0.02),
+        height: Device().height(context) * 0.98,
+        width: Device().width(context)* 0.97,
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _pageTitle(),
-            SizedBox(height: _deviceHeight * 0.04),
+            SizedBox(height: Device().height(context) * 0.04),
             _loginForm(),
-            SizedBox(height: _deviceHeight * 0.05),
+            SizedBox(height: Device().height(context) * 0.05),
             _loginButton(),
-            SizedBox(height: _deviceHeight * 0.02),
+            SizedBox(height: Device().height(context) * 0.02),
             _registerAccountLink()
           ],
         ),
@@ -66,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _pageTitle() {
     return SizedBox(
-      height: _deviceHeight * 0.1,
+      height: Device().height(context) * 0.1,
       child: const Text(
         "Dosti",
         style: TextStyle(
@@ -77,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loginForm() {
     return SizedBox(
-      height: _deviceHeight * 0.18,
+      height: Device().height(context) * 0.18,
       child: Form(
         key: _loginFormKey,
         child: Column(
@@ -113,8 +112,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget _loginButton() {
     return RoundedButton(
         name: "Login",
-        height: _deviceHeight * 0.065,
-        width: _deviceWidth * 0.65,
+        height: Device().height(context) * 0.065,
+        width: Device().width(context)* 0.65,
         onPressed: () async{
           if (_loginFormKey.currentState!.validate()) {
             _loginFormKey.currentState!.save();

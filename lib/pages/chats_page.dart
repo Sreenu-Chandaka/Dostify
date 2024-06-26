@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
 
 //Providers
+import '../core/constants.dart';
 import '../providers/authentication_provider.dart';
 import '../providers/chats_page_provider.dart';
 
@@ -34,8 +35,7 @@ class ChatsPage extends StatefulWidget {
 }
 
 class _ChatsPageState extends State<ChatsPage> {
-  late double _deviceHeight;
-  late double _deviceWidth;
+  
 
   late AuthenticationProvider _auth;
   late NavigationService _navigation;
@@ -43,8 +43,7 @@ class _ChatsPageState extends State<ChatsPage> {
 
   @override
   Widget build(BuildContext context) {
-    _deviceHeight = MediaQuery.of(context).size.height;
-    _deviceWidth = MediaQuery.of(context).size.width;
+    
     _auth = Provider.of<AuthenticationProvider>(context);
     _navigation = GetIt.instance.get<NavigationService>();
     return MultiProvider(
@@ -63,11 +62,11 @@ class _ChatsPageState extends State<ChatsPage> {
         _pageProvider = _context.watch<ChatsPageProvider>();
         return Container(
           padding: EdgeInsets.symmetric(
-            horizontal: _deviceWidth * 0.03,
-            vertical: _deviceHeight * 0.02,
+            horizontal: Device().width(context) * 0.03,
+            vertical:Device().height(context)(context) * 0.02,
           ),
-          height: _deviceHeight * 0.98,
-          width: _deviceWidth * 0.97,
+          height: Device().height(context)(context) * 0.98,
+          width: Device().width(context) * 0.97,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -136,7 +135,7 @@ class _ChatsPageState extends State<ChatsPage> {
           : _chat.messages.first.content;
     }
     return CustomListViewTilesWithActivity(
-      height: _deviceHeight * 0.10,
+      height: Device().height(context)(context) * 0.10,
       title: _chat.title(),
       subtitle: _subtitleText,
       imagePath: _chat.imageURL(),

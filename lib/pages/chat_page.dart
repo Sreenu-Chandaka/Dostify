@@ -1,5 +1,6 @@
 import 'package:dostify/models/chat.dart';
 import 'package:dostify/providers/authentication_provider.dart';
+import 'package:dostify/providers/chat_page_provider.dart';
 import 'package:dostify/widgets/top_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ class _ChatsPageState extends State<ChatPage> {
   late double _deviceHeight;
   late double _deviceWidth;
   late AuthenticationProvider _auth;
+  late ChatPageProvider _pageProvider;
   late GlobalKey<FormState> _messageFormState;
   late ScrollController _messageListViewController;
 
@@ -26,6 +28,7 @@ class _ChatsPageState extends State<ChatPage> {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
     _auth = Provider.of<AuthenticationProvider>(context);
+    _pageProvider = Provider.of<ChatPageProvider>(context);
     return _buildUI();
   }
 
@@ -59,9 +62,7 @@ class _ChatsPageState extends State<ChatPage> {
                     Icons.arrow_back,
                     color: Color.fromRGBO(0, 82, 218, 1.0),
                   ),
-                  onPressed: () {
-                    
-                  },
+                  onPressed: () {},
                 ),
               )
             ],

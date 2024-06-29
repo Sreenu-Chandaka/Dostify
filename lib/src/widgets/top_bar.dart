@@ -10,17 +10,14 @@ class TopBar extends StatelessWidget {
   Widget? secondaryAction;
   double? fontSize;
 
-  
-
   TopBar(this._barTitle,
       {super.key,
       this.primaryAction,
       this.secondaryAction,
-      this.fontSize=35});
+      this.fontSize = 35});
 
   @override
   Widget build(BuildContext context) {
- 
     return _buildUI(context);
   }
 
@@ -34,7 +31,7 @@ class TopBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           if (secondaryAction != null) secondaryAction!,
-          _titleBar() ,
+          _titleBar(),
           if (primaryAction != null) primaryAction!
         ],
       ),

@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 
 //Pages
-import '../pages/chats_page.dart';
-import '../pages/users_page.dart';
+import 'chats_page.dart';
+import 'users_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentPage = 0;
-  final List<Widget> _pages = [ const ChatsPage(), const UsersPage()];
+  final List<Widget> _pages = [const ChatsPage(), const UsersPage()];
 
   @override
   Widget build(BuildContext context) {

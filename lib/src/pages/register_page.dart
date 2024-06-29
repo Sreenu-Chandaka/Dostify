@@ -2,7 +2,7 @@
 
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
-import 'package:dostify/services/database_service.dart';
+import 'package:dostify/src/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
@@ -31,7 +31,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-
   final _registerFormKey = GlobalKey<FormState>();
 
   PlatformFile? _profileImage;
@@ -48,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _auth = Provider.of<AuthenticationProvider>(context);
     _db = GetIt.instance.get<DatabaseService>();
     _cloudStorage = GetIt.instance.get<CloudStorageService>();
- 
+
     return _buildUI();
   }
 
@@ -56,8 +55,9 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(
-            horizontal: Device().width(context)* 0.03, vertical: Device().height(context) * 0.02),
-        width: Device().width(context)* 0.98,
+            horizontal: Device().width(context) * 0.03,
+            vertical: Device().height(context) * 0.02),
+        width: Device().width(context) * 0.98,
         height: Device().height(context) * 0.97,
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -144,20 +144,19 @@ class _RegisterPageState extends State<RegisterPage> {
     return RoundedButton(
       name: "Register",
       height: Device().height(context) * 0.065,
-      width: Device().width(context)* 0.65,
+      width: Device().width(context) * 0.65,
       onPressed: () async {
         if (_registerFormKey.currentState!.validate() &&
             _profileImage != null) {
           _registerFormKey.currentState!.save();
           String? _uid = await _auth.registerUserUsingEmailAndPassword(
-              _email!,_password!);
+              _email!, _password!);
           String? imageURL =
               await _cloudStorage.saveUserImageToStorage(_uid, _profileImage!);
 
-          await _db.createUser(
-              _uid!, _email!,_name!,imageURL!);
+          await _db.createUser(_uid!, _email!, _name!, imageURL!);
           await _auth.logout();
-          await _auth.loginUsingEmailAndPassword(_email!,_password!);
+          await _auth.loginUsingEmailAndPassword(_email!, _password!);
         }
       },
     );

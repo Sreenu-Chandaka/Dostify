@@ -1,5 +1,5 @@
 //Packages
-import "package:dostify/core/constants.dart";
+import "package:dostify/src/core/constants.dart";
 import 'package:flutter/material.dart';
 import "package:get_it/get_it.dart";
 import "package:provider/provider.dart";
@@ -22,8 +22,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
- 
-
   late AuthenticationProvider auth;
   late NavigationService navigation;
 
@@ -32,7 +30,6 @@ class _LoginPageState extends State<LoginPage> {
   String? password;
   @override
   Widget build(BuildContext context) {
-   
     auth = Provider.of<AuthenticationProvider>(context);
     navigation = GetIt.instance.get<NavigationService>();
     return _buildUI();
@@ -42,9 +39,10 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(
-            horizontal: Device().width(context)* 0.03, vertical: Device().height(context) * 0.02),
+            horizontal: Device().width(context) * 0.03,
+            vertical: Device().height(context) * 0.02),
         height: Device().height(context) * 0.98,
-        width: Device().width(context)* 0.97,
+        width: Device().width(context) * 0.97,
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -113,22 +111,18 @@ class _LoginPageState extends State<LoginPage> {
     return RoundedButton(
         name: "Login",
         height: Device().height(context) * 0.065,
-        width: Device().width(context)* 0.65,
-        onPressed: () async{
+        width: Device().width(context) * 0.65,
+        onPressed: () async {
           if (_loginFormKey.currentState!.validate()) {
             _loginFormKey.currentState!.save();
-           await auth.loginUsingEmailAndPassword(email!,  password!);
-     
+            await auth.loginUsingEmailAndPassword(email!, password!);
           }
-        });  
+        });
   }
 
   Widget _registerAccountLink() {
     return GestureDetector(
         onTap: () => navigation.navigateToRoute('/register'),
-
-         
-        
         child: const Text(
           "Don't you have an account?",
           style: TextStyle(color: Colors.blueAccent),

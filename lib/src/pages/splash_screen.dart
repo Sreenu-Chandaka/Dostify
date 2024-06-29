@@ -66,25 +66,24 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Future<void> _setup()async{
+  Future<void> _setup() async {
     WidgetsFlutterBinding.ensureInitialized();
-    await  Firebase.initializeApp(
-       options: const FirebaseOptions(
-    apiKey: 'AIzaSyBipXQHfaO1FAo0orC7KO5MMgdMzKF_rvI',
-    appId: "1:868733349493:android:7a230dd2e110329764d23c",
-    messagingSenderId: 'sendid',
-    projectId: "dostify-d9fa0",
-    storageBucket: "dostify-d9fa0.appspot.com",
-  )
-    );
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+      apiKey: 'AIzaSyBipXQHfaO1FAo0orC7KO5MMgdMzKF_rvI',
+      appId: "1:868733349493:android:7a230dd2e110329764d23c",
+      messagingSenderId: 'sendid',
+      projectId: "dostify-d9fa0",
+      storageBucket: "dostify-d9fa0.appspot.com",
+    ));
     _regiterServices();
   }
 
-  void _regiterServices(){
-GetIt.instance.registerSingleton<NavigationService>(NavigationService());
-GetIt.instance.registerSingleton<MediaService>(MediaService());
-GetIt.instance.registerSingleton<CloudStorageService>(CloudStorageService());
-GetIt.instance.registerSingleton<DatabaseService>(DatabaseService());
+  void _regiterServices() {
+    GetIt.instance.registerSingleton<NavigationService>(NavigationService());
+    GetIt.instance.registerSingleton<MediaService>(MediaService());
+    GetIt.instance
+        .registerSingleton<CloudStorageService>(CloudStorageService());
+    GetIt.instance.registerSingleton<DatabaseService>(DatabaseService());
   }
-  
 }

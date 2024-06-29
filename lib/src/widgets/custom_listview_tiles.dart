@@ -3,10 +3,9 @@ import "package:flutter/material.dart";
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 //Widgets
-import "../widgets/rounded_image.dart";
+import "rounded_image.dart";
 
 //Models
-
 
 class CustomListViewTilesWithActivity extends StatelessWidget {
   final double height;
@@ -15,7 +14,8 @@ class CustomListViewTilesWithActivity extends StatelessWidget {
   final Function onTap;
 
   const CustomListViewTilesWithActivity(
-      {super.key, required this.height,
+      {super.key,
+      required this.height,
       required this.title,
       required this.subtitle,
       required this.imagePath,

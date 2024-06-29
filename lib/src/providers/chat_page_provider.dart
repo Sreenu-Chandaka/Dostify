@@ -2,11 +2,11 @@
 
 import 'dart:async';
 
-import 'package:dostify/providers/authentication_provider.dart';
-import 'package:dostify/services/cloud_storage_service.dart';
-import 'package:dostify/services/database_service.dart';
-import 'package:dostify/services/media_service.dart';
-import 'package:dostify/services/navigation_service.dart';
+import 'package:dostify/src/providers/authentication_provider.dart';
+import 'package:dostify/src/services/cloud_storage_service.dart';
+import 'package:dostify/src/services/database_service.dart';
+import 'package:dostify/src/services/media_service.dart';
+import 'package:dostify/src/services/navigation_service.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -80,7 +80,7 @@ class ChatPageProvider extends ChangeNotifier {
           content: _downloadURL!,
           sentTime: DateTime.now(),
         );
-         _db.addMessageToChat(chatId, _messageToSend);
+        _db.addMessageToChat(chatId, _messageToSend);
       }
     } catch (e) {
       print("Error sending image message");

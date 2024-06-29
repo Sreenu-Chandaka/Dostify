@@ -14,7 +14,7 @@ import '../providers/chats_page_provider.dart';
 import '../services/navigation_service.dart';
 
 // Pages
-import '../pages/chat_page.dart';
+import 'chat_page.dart';
 
 //Widgets
 import '../widgets/top_bar.dart';
@@ -35,15 +35,12 @@ class ChatsPage extends StatefulWidget {
 }
 
 class _ChatsPageState extends State<ChatsPage> {
-  
-
   late AuthenticationProvider _auth;
   late NavigationService _navigation;
   late ChatsPageProvider _pageProvider;
 
   @override
   Widget build(BuildContext context) {
-    
     _auth = Provider.of<AuthenticationProvider>(context);
     _navigation = GetIt.instance.get<NavigationService>();
     return MultiProvider(
@@ -63,7 +60,7 @@ class _ChatsPageState extends State<ChatsPage> {
         return Container(
           padding: EdgeInsets.symmetric(
             horizontal: Device().width(context) * 0.03,
-            vertical:Device().height(context)(context) * 0.02,
+            vertical: Device().height(context)(context) * 0.02,
           ),
           height: Device().height(context)(context) * 0.98,
           width: Device().width(context) * 0.97,
@@ -143,9 +140,7 @@ class _ChatsPageState extends State<ChatsPage> {
       isActivity: _chat.activity,
       onTap: () {
         print("onTap triggered properly");
-        _navigation.navigateToPage(
-          ChatPage(chat: _chat)
-        );
+        _navigation.navigateToPage(ChatPage(chat: _chat));
       },
     );
   }

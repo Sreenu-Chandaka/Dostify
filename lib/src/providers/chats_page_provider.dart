@@ -11,7 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/database_service.dart';
 
 //Providers
-import '../providers/authentication_provider.dart';
+import 'authentication_provider.dart';
 
 //Models
 import '../models/chat.dart';

@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentPage = 0;
-  final List<Widget> _pages = [const ChatsPage(), const UsersPage()];
+  final List<Widget> _pages = [ChatsPage(), const UsersPage()];
 
   @override
   Widget build(BuildContext context) {

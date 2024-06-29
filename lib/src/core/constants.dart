@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Device {
-  double _deviceHeight = 0;
-  double _deviceWidth = 0;
+  num _deviceHeight = 0;
+  num _deviceWidth = 0;
   height(BuildContext context) {
     return _deviceHeight = MediaQuery.of(context).size.height;
   }

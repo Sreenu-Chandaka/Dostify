@@ -1,24 +1,21 @@
 //Packages
-// ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_is_empty
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
 
 //Providers
-import '../core/constants.dart';
 import '../providers/authentication_provider.dart';
 import '../providers/chats_page_provider.dart';
 
 //Services
 import '../services/navigation_service.dart';
 
-// Pages
-import 'chat_page.dart';
+//Pages
+import '../pages/chat_page.dart';
 
 //Widgets
-import '../widgets/top_bar.dart';
 import '../widgets/custom_listview_tiles.dart';
+import '../widgets/top_bar.dart';
 
 //Models
 import '../models/chat.dart';
@@ -26,8 +23,6 @@ import '../models/chat_user.dart';
 import '../models/chat_message.dart';
 
 class ChatsPage extends StatefulWidget {
-  const ChatsPage({super.key});
-
   @override
   State<StatefulWidget> createState() {
     return _ChatsPageState();
@@ -35,12 +30,17 @@ class ChatsPage extends StatefulWidget {
 }
 
 class _ChatsPageState extends State<ChatsPage> {
+  late double _deviceHeight;
+  late double _deviceWidth;
+
   late AuthenticationProvider _auth;
   late NavigationService _navigation;
   late ChatsPageProvider _pageProvider;
 
   @override
   Widget build(BuildContext context) {
+    _deviceHeight = MediaQuery.of(context).size.height;
+    _deviceWidth = MediaQuery.of(context).size.width;
     _auth = Provider.of<AuthenticationProvider>(context);
     _navigation = GetIt.instance.get<NavigationService>();
     return MultiProvider(
@@ -59,11 +59,11 @@ class _ChatsPageState extends State<ChatsPage> {
         _pageProvider = _context.watch<ChatsPageProvider>();
         return Container(
           padding: EdgeInsets.symmetric(
-            horizontal: Device().width(context) * 0.03,
-            vertical: Device().height(context)(context) * 0.02,
+            horizontal: _deviceWidth * 0.03,
+            vertical: _deviceHeight * 0.02,
           ),
-          height: Device().height(context)(context) * 0.98,
-          width: Device().width(context) * 0.97,
+          height: _deviceHeight * 0.98,
+          width: _deviceWidth * 0.97,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -72,7 +72,7 @@ class _ChatsPageState extends State<ChatsPage> {
               TopBar(
                 'Chats',
                 primaryAction: IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.logout,
                     color: Color.fromRGBO(0, 82, 218, 1.0),
                   ),
@@ -104,7 +104,7 @@ class _ChatsPageState extends State<ChatsPage> {
               },
             );
           } else {
-            return const Center(
+            return Center(
               child: Text(
                 "No Chats Found.",
                 style: TextStyle(color: Colors.white),
@@ -112,7 +112,7 @@ class _ChatsPageState extends State<ChatsPage> {
             );
           }
         } else {
-          return const Center(
+          return Center(
             child: CircularProgressIndicator(
               color: Colors.white,
             ),
@@ -131,16 +131,17 @@ class _ChatsPageState extends State<ChatsPage> {
           ? "Media Attachment"
           : _chat.messages.first.content;
     }
-    return CustomListViewTilesWithActivity(
-      height: Device().height(context)(context) * 0.10,
+    return CustomListViewTileWithActivity(
+      height: _deviceHeight * 0.10,
       title: _chat.title(),
       subtitle: _subtitleText,
       imagePath: _chat.imageURL(),
       isActive: _isActive,
       isActivity: _chat.activity,
       onTap: () {
-        print("onTap triggered properly");
-        _navigation.navigateToPage(ChatPage(chat: _chat));
+        _navigation.navigateToPage(
+          ChatPage(chat: _chat),
+        );
       },
     );
   }

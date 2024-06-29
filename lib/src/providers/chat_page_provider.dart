@@ -1,37 +1,57 @@
-// ignore_for_file: unused_field, no_leading_underscores_for_local_identifiers, avoid_print
-
 import 'dart:async';
 
-import 'package:dostify/src/providers/authentication_provider.dart';
-import 'package:dostify/src/services/cloud_storage_service.dart';
-import 'package:dostify/src/services/database_service.dart';
-import 'package:dostify/src/services/media_service.dart';
-import 'package:dostify/src/services/navigation_service.dart';
+//Packages
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+
+//Services
+import '../services/database_service.dart';
+import '../services/cloud_storage_service.dart';
+import '../services/media_service.dart';
+import '../services/navigation_service.dart';
+
+//Providers
+import '../providers/authentication_provider.dart';
+
+//Models
 import '../models/chat_message.dart';
 
 class ChatPageProvider extends ChangeNotifier {
-  late NavigationService _navigation;
+  late DatabaseService _db;
   late CloudStorageService _storage;
   late MediaService _media;
-  final AuthenticationProvider _auth;
+  late NavigationService _navigation;
 
-  late DatabaseService _db;
+  AuthenticationProvider _auth;
+  ScrollController _messagesListViewController;
 
-  final ScrollController _messageListViewController;
-  String chatId;
+  String _chatId;
   List<ChatMessage>? messages;
+
   late StreamSubscription _messagesStream;
+  late StreamSubscription _keyboardVisibilityStream;
+  late KeyboardVisibilityController _keyboardVisibilityController;
+
   String? _message;
 
-  ChatPageProvider(this._auth, this.chatId, this._messageListViewController) {
+  String get message {
+    return message;
+  }
+
+  void set message(String _value) {
+    _message = _value;
+  }
+
+  ChatPageProvider(this._chatId, this._auth, this._messagesListViewController) {
     _db = GetIt.instance.get<DatabaseService>();
-    _media = GetIt.instance.get<MediaService>();
     _storage = GetIt.instance.get<CloudStorageService>();
+    _media = GetIt.instance.get<MediaService>();
     _navigation = GetIt.instance.get<NavigationService>();
+    _keyboardVisibilityController = KeyboardVisibilityController();
     listenToMessages();
+    listenToKeyboardChanges();
   }
 
   @override
@@ -42,55 +62,76 @@ class ChatPageProvider extends ChangeNotifier {
 
   void listenToMessages() {
     try {
-      _messagesStream = _db.streamMessagesForChat(chatId).listen((_snapshot) {
-        List<ChatMessage> _messages = _snapshot.docs.map((_m) {
-          Map<String, dynamic> _messageData = _m.data() as Map<String, dynamic>;
-          return ChatMessage.fromJSON(_messageData);
-        }).toList();
-        messages = _messages;
-        notifyListeners();
-      });
+      _messagesStream = _db.streamMessagesForChat(_chatId).listen(
+        (_snapshot) {
+          List<ChatMessage> _messages = _snapshot.docs.map(
+            (_m) {
+              Map<String, dynamic> _messageData =
+                  _m.data() as Map<String, dynamic>;
+              return ChatMessage.fromJSON(_messageData);
+            },
+          ).toList();
+          messages = _messages;
+          notifyListeners();
+          WidgetsBinding.instance!.addPostFrameCallback(
+            (_) {
+              if (_messagesListViewController.hasClients) {
+                _messagesListViewController.jumpTo(
+                    _messagesListViewController.position.maxScrollExtent);
+              }
+            },
+          );
+        },
+      );
     } catch (e) {
-      print("Error getting Messages");
+      print("Error getting messages.");
       print(e);
     }
+  }
+
+  void listenToKeyboardChanges() {
+    _keyboardVisibilityStream = _keyboardVisibilityController.onChange.listen(
+      (_event) {
+        _db.updateChatData(_chatId, {"is_activity": _event});
+      },
+    );
   }
 
   void sendTextMessage() {
     if (_message != null) {
       ChatMessage _messageToSend = ChatMessage(
-        senderID: _auth.user.uid,
-        type: MessageType.TEXT,
         content: _message!,
+        type: MessageType.TEXT,
+        senderID: _auth.user.uid,
         sentTime: DateTime.now(),
       );
-      _db.addMessageToChat(chatId, _messageToSend);
+      _db.addMessageToChat(_chatId, _messageToSend);
     }
   }
 
   void sendImageMessage() async {
     try {
-      PlatformFile? file = await _media.pickImageFromLibrary();
-      if (file != null) {
-        String? _downloadURL =
-            await _storage.saveChatImageToStorage(_auth.user.uid, chatId, file);
+      PlatformFile? _file = await _media.pickImageFromLibrary();
+      if (_file != null) {
+        String? _downloadURL = await _storage.saveChatImageToStorage(
+            _chatId, _auth.user.uid, _file);
         ChatMessage _messageToSend = ChatMessage(
-          senderID: _auth.user.uid,
-          type: MessageType.IMAGE,
           content: _downloadURL!,
+          type: MessageType.IMAGE,
+          senderID: _auth.user.uid,
           sentTime: DateTime.now(),
         );
-        _db.addMessageToChat(chatId, _messageToSend);
+        _db.addMessageToChat(_chatId, _messageToSend);
       }
     } catch (e) {
-      print("Error sending image message");
+      print("Error sending image message.");
       print(e);
     }
   }
 
   void deleteChat() {
     goBack();
-    _db.deleteChat(chatId);
+    _db.deleteChat(_chatId);
   }
 
   void goBack() {
